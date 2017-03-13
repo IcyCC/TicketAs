@@ -31,7 +31,7 @@ class ApiTool:
         return self.sendRequest(url="http://v.juhe.cn/movie/query", tittle=title, smode =0)["result"]
 
     def getShowsByCinema(self,	cinemaid):
-        return self.sendRequest(url="http://v.juhe.cn/movie/query", cinemaid=cinemaid, smode=0)["result"]['lists']
+        return self.sendRequest(url="http://v.juhe.cn/movie/query", cinemaid=cinemaid, smode=0)["result"]
 
 
 
