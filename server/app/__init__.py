@@ -2,10 +2,12 @@
 from flask import Flask
 from flask_bootstrap import Bootstrap
 from flask_moment import Moment
-from flask_pagedown import  PageDown
 from flask_sqlalchemy import SQLAlchemy
+from flask_pagedown import PageDown
 
-from server.config import config
+from config import config
+from flask_pagedown import  PageDown
+
 
 bootstrap = Bootstrap()
 moment = Moment()

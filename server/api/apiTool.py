@@ -1,6 +1,5 @@
 #coding=utf-8
 import requests
-from urllib import quote
 
 class ApiTool:
     def __init__(self):
@@ -31,7 +30,7 @@ class ApiTool:
         return self.sendRequest(url="http://v.juhe.cn/movie/query", tittle=title, smode =0)["result"]
 
     def getShowsByCinema(self,	cinemaid):
-        return self.sendRequest(url="http://v.juhe.cn/movie/query", cinemaid=cinemaid, smode=0)["result"]
+        return self.sendRequest(url="http://v.juhe.cn/movie/cinemas.movies", cinemaid=cinemaid, smode=0)["result"]
 
 
 

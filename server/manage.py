@@ -1,8 +1,9 @@
 # -*- coding:utf-8 -*-  
-from flask.ext.migrate import Migrate,MigrateCommand
+import os
+from app import create_app,db
+from app.models import *
 from flask.ext.script import Manager,Shell
-
-from server.app import *
+from flask.ext.migrate import Migrate,MigrateCommand
 
 app = create_app('run')
 manager = Manager(app)
