@@ -12,6 +12,13 @@ class City(db.Model):
 
     cinemas = db.relationship('Cinema', backref='city', lazy='dynamic')
 
+    def to_json(self):
+        return {
+            'id': str(self.id),
+            'cityPinyin': self.cityPinyin,
+            'cinemaNum':str(self.cinemaNum)
+        }
+
 
 class Cinema(db.Model):
     __tablename__ = 'cinemas'
@@ -26,6 +33,17 @@ class Cinema(db.Model):
     city_id = db.Column(db.Integer, db.ForeignKey("citys.id"))
     shows = db.relationship('Show', backref='cinema', lazy="dynamic")
 
+    def to_json(self):
+        return {
+            'id': str(self.id),
+            'cinemaName': self.cityPinyin,
+            'address': self.address,
+            'telephone': self.telephone,
+            'latitude':str(self.latitude),
+            'longitude':str(self.longitude),
+            'city_id':str(self.city_id)
+        }
+
 
 class Show(db.Model):
     __tablename__ = 'shows'
@@ -38,6 +56,16 @@ class Show(db.Model):
 
     movie_id = db.Column(db.Integer, db.ForeignKey("movies.id"))
     cinema_id = db.Column(db.Integer, db.ForeignKey("cinemas.id"))
+
+    def to_json(self):
+        return {
+            'id': str(self.id),
+            'time': str(self.time),
+            'price': str(self.price),
+            'ticket_url': self.ticket_url,
+            'movie_id':str(self.movie_id),
+            'cinema_id':str(self.cinema_id)
+        }
 
     @staticmethod
     def in_time(str):
@@ -56,4 +84,11 @@ class Movie(db.Model):
     detail = db.Column(db.PickleType, index=True)
     shows = db.relationship('Show', backref='movie', lazy='dynamic')
 
-
+    def to_json(self):
+        return {
+            'id': str(self.id),
+            'tittle': self.tittle,
+            'pic_url': self.pic_url,
+            'rating': str(self.rating),
+            'detail':self.detail
+        }
