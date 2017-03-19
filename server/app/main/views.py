@@ -6,11 +6,13 @@ from .forms import*
 from ..models import *
 import math
 
-@main.route('/',methods = ['GET',])
+
+@main.route('/', methods=['GET',])
 def index():
     return render_template('index.html')
 
-@main.route('/recommend',methods=['POST',])
+
+@main.route('/recommend', methods=['POST',])
 def recommend():
     if request.method == 'POST':
         form = request.form
@@ -23,55 +25,55 @@ def recommend():
         if way is not None:
             new_cinemas = []
             for cinema in cinemas:
-                if get_distance(latitude, longitude,cinema.latitude,cinema.longitude) < way:
-                        new_cinemas = new_cinemas+cinema
+                if get_distance(latitude, longitude, cinema.latitude, cinema.longitude) < way:
+                    new_cinemas = new_cinemas+cinema
 
         movie = form.get('movie')
         shows = []
         if movie is None:
-            movie= Movie.query.order_by(Movie.rating).first().id
+            movie = Movie.query.order_by(Movie.rating).first().id
         for cinema in new_cinemas:
             shows = shows+cinema.shows.query.filter_by(movie_id=movie).all()
         shows.sort(key=lambda s: s.price)
 
         return jsonify(result=[s.to_json() for s in shows])
 
-@main.route("/movies",methods=['GET',])
+
+@main.route("/movies", methods=['GET',])
 def get_movies():
     if request.method == 'GET':
         movies = Movie.query.all()
-        return jsonify(result=[ m.to_json() for m in movies])
+        return jsonify(result=[m.to_json() for m in movies])
 
-@main.route("/movies",methods=['GET',])
-def get_movies():
-    if request.method == 'GET':
-        movies = Movie.query.all()
-        return jsonify(result=[ m.to_json() for m in movies])
 
-@main.route("/cinemas",methods=['GET',])
+@main.route("/cinemas", methods=['GET',])
 def get_cinemas():
     if request.method == 'GET':
         city=request.args.get('city_id')
-        cinemas = Cinema.query.filter_by(city_id=city)
+        cinemas = Cinema.query.filter_by(city=City.query.filter_by(id=city).first()).all()
         return jsonify(result=[c.to_json() for c in cinemas])
 
-@main.route("/citys",methods=['GET',])
+
+@main.route("/citys", methods=['GET',])
 def get_citys():
     if request.method == 'GET':
         citys = City.query.all()
         return jsonify(result=[c.to_json() for c in citys])
 
-@main.route("/shows",methods=['GET',])
+
+@main.route("/shows", methods=['GET',])
 def get_shows():
     if request.method == 'GET':
         shows = Show.query.all()
         return jsonify(result=[s.to_json() for s in shows])
 
 
+
 def rad(d):
     """to弧度
     """
     return d * math.pi / 180.0
+
 
 def get_distance(lat1, lon1, lat2, lon2):
     """通过经纬度计算距离

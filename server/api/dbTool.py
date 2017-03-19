@@ -35,7 +35,7 @@ def initMovie(db, tool=ApiTool()):
             m = tool.getMovieById(movie.get('movieId'))
             if m is not None:
                 db.session.add(Movie(id=m.get('movieId'), tittle=m.get('tittle'),
-                                     pic_url=m.get('poster'), rating=m.get('rating'), detail=m))
+                                     pic_url=m.get('poster'), rating=m.get('rating_count'), detail=m))
             else:
                 db.session.add(Movie(id=movie.get('movieId'), tittle=movie.get('movieName'),
                                      pic_url=movie.get('pic_url')))

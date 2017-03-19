@@ -36,7 +36,7 @@ class Cinema(db.Model):
     def to_json(self):
         return {
             'id': str(self.id),
-            'cinemaName': self.cityPinyin,
+            'cinemaName': self.cinemaName,
             'address': self.address,
             'telephone': self.telephone,
             'latitude':str(self.latitude),
