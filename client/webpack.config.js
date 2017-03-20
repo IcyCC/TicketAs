@@ -8,16 +8,18 @@ module.exports = {
         index:"./index.js"
     },
     output:{
-        path:"./build",
+        path:"../server/app/static/js",
         filename:"bundle.js",
          publicPath: '/build'
     },
-    module:{
-       loaders: [{
+module:{
+       loaders: [{ test: /\.css$/, loader: 'style-loader!css-loader' },
+            {test: /\.less$/, loader: 'style-loader!css-loader!less-loader'}
+           ,
+           {
            test: /\.jsx?$/,
            exclude: /(node_modules)/,
-           loader: "babel-loader",
-       }]},
+           loader: "babel-loader",}]},
  plugins: [
   new webpack.ProvidePlugin({
     "React": "react",
