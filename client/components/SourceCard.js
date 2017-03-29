@@ -21,7 +21,6 @@ export default function({card}){
          <p style={{color:"#606060"}}>{card.body}</p>
          </Card>
      }
-
 }
 
 /**

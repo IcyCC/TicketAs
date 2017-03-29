@@ -3,6 +3,7 @@ import React ,{Component}from "react"
 import { Card, Col, Row } from 'antd';
 import {WriterFrom} from './Writer'
 import SourceCard from "./SourceCard"
+import {Reply} from "./Reply"
 
 export default class Discuss extends Component {
     constructor(props) {
@@ -16,6 +17,10 @@ export default class Discuss extends Component {
                 options: []
             }
         }
+    }
+
+    handleRefresh(){
+        this.getPosts()
     }
 
     onTitleChange(e) {
@@ -70,10 +75,13 @@ export default class Discuss extends Component {
 
     }
 
+
     render() {
         let posts = this.state.posts.map(function (item, index) {
-            return <Col span={14} offset={5} key={"post" + item.id}><SourceCard card={item} /></Col>
-        });
+            return <Col span={14} offset={5} key={"post" + item.id}><SourceCard card={item} />
+                <Reply comments ={item.comments} post_id={item.id}
+                       handleRefresh={this.handleRefresh.bind(this)}/></Col>
+        }.bind(this));
         console.log("discuss",posts);
         return this.props.is_login ?
             <div>
@@ -88,3 +96,5 @@ export default class Discuss extends Component {
 /**
  * Created by Su chang on 2017/3/20.
  */
+
+
