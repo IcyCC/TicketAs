@@ -8,32 +8,29 @@ export default ({dispatch,getState})=>{
         return next => action =>{
             //????
 
-            const { type,api,request,method = 'GET',...rest } = action;
+            const { type,api,playload,method,...rest } = action;
 
             if(!api)
             {
                 return next(action);
             }
-            console.log("middleware");
+            console.log("middleware",method);
             next({...rest,type,status:'FETCHING'});
 
 
-
-           return fetch(api,{
-                method,
-                headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',},
-              credentials: 'same-origin',
-                ...(method == 'POST' || method == 'PUT' || method == 'GET' ?
-            { body: request && JSON.stringify(request) } :
-            {}),
-            }).then(resp=>{
-                if(resp.status !== 200 )
+            return $.ajax({
+                    type:method,
+                    url:api,
+                    data:playload,
+                    withCredentials: true
+            }).done((resp)=>{
+                if(resp.status !="success")
                 {
-                    next({...next,type,api,status:"ERROR"});
-                }else{
-                    resp.json().then(json=>next(merge({},{ ...rest, type, api, status: 'SUCCESS', resp: json })))
+                    next({...rest,type,api,status:"ERROR"})
+                }
+                else
+                {
+                    next(merge({},{ ...rest, type, api, status: 'SUCCESS', playload: resp }))
                 }
             })
         }
