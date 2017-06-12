@@ -12,31 +12,31 @@ def index():
     return render_template('index.html')
 
 
-@main.route('/recommend', methods=['POST',])
+@main.route('/recommend', methods=['GET',])
 def recommend():
-    if request.method == 'POST':
-        form = request.form
-        city = form.get("city")
-        latitude = form.get('latitude')
-        longitude = form.get('longitude')
-        way = form.get('way')
+    if request.method == 'GET':
+        city = request.args.get("city")
+        latitude = request.args.get('latitude')
+        longitude =request.args.get('longitude')
+        way = request.args.get('way')
 
-        cinemas = Cinema.query.filter_by(city)
+        cinemas = Cinema.query.filter_by(city_id=city)
         if way is not None:
             new_cinemas = []
             for cinema in cinemas:
                 if get_distance(latitude, longitude, cinema.latitude, cinema.longitude) < way:
                     new_cinemas = new_cinemas+cinema
+        else:
+            new_cinemas = list(cinemas)
 
-        movie = form.get('movie')
+        movie = request.args.get('movie')
         shows = []
         if movie is None:
             movie = Movie.query.order_by(Movie.rating).first().id
         for cinema in new_cinemas:
-            shows = shows+cinema.shows.query.filter_by(movie_id=movie).all()
-        shows.sort(key=lambda s: s.price)
+            shows = shows+Show.query.filter_by(cinema_id=cinema.id).filter_by(movie_id=movie).order_by(Show.price).all()
 
-        return jsonify(result=[s.to_json() for s in shows])
+        return jsonify(result=[s.to_json() for s in shows[0:11]])
 
 
 @main.route("/movies", methods=['GET',])
@@ -49,7 +49,7 @@ def get_movies():
 @main.route("/cinemas", methods=['GET',])
 def get_cinemas():
     if request.method == 'GET':
-        city=request.args.get('city_id')
+        city = request.args.get('city_id    ')
         cinemas = Cinema.query.filter_by(city=City.query.filter_by(id=city).first()).all()
         return jsonify(result=[c.to_json() for c in cinemas])
 

@@ -66,9 +66,9 @@ class Show(db.Model):
             'id': str(self.id),
             'time': str(self.time),
             'price': str(self.price),
-            'ticket_url': self.ticket_url,
-            'movie_id':str(self.movie_id),
-            'cinema_id':str(self.cinema_id)
+            'ticket_url': str(self.ticket_url),
+            'movie': self.movie.tittle,
+            'cinema': self.cinema.cinemaName
         }
 
     @staticmethod
